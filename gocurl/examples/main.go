@@ -15,6 +15,8 @@ func main() {
 	version := parser.Flag("V", "version", &argparse.Options{Help: "Show version number and quit"})
 	verbose := parser.Flag("v", "verbose", &argparse.Options{Help: "Make the operation more talkative"})
 	method := parser.String("X", "method", &argparse.Options{Required: false, Help: "HTTP method"})
+	headers := parser.StringList("H", "header", &argparse.Options{Required: false, Help: "HTTP headers"})
+	payload := parser.String("d", "data", &argparse.Options{Required: false, Help: "POST Data"})
 
 	err := parser.Parse(os.Args)
 	if err != nil {
@@ -31,6 +33,9 @@ func main() {
 	curlConfig.Url = *url
 	curlConfig.Verbose = *verbose
 	curlConfig.Method = *method
+	curlConfig.Headers = *headers
+	curlConfig.Payload = *payload
+
 	if !curlConfig.VerifyCurlConfig() {
 		fmt.Print(parser.Usage(err))
 		os.Exit(1)
